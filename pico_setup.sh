@@ -139,7 +139,7 @@ fail() {
 
     R="${?}"
     echo "Validation failed! :'-("
-    if [ ${*} ]; then
+    if [[ ${#} -ne 1 ]]; then
         echo "${*}"
     fi
     exit ${R}
@@ -147,7 +147,7 @@ fail() {
 
 validate_git_repo() {
     # tests that the given relative path exists and is a git repo
-    git -C ${TARGET_DIR}/${1} status >& /dev/null || fail
+    git -C "${TARGET_DIR}/${1}" status >& /dev/null || fail
 }
 
 validate_toolchain_linux() {
@@ -215,7 +215,7 @@ clone_raspberrypi_repo() {
     else
         echo "Cloning ${REPO_URL}"
         if [ ${#} -gt 0 ]; then
-            git -C "${TARGET_DIR}" clone -b "${BRANCH}" "${REPO_URL}" ${*}
+            git -C "${TARGET_DIR}" clone -b "${BRANCH}" "${REPO_URL}" "${@}"
         else
             git -C "${TARGET_DIR}" clone -b "${BRANCH}" "${REPO_URL}"
         fi
@@ -365,13 +365,13 @@ validate_pico_examples() {
     validate_git_repo pico-examples
 
     # test that blink is built
-    test -f ${TARGET_DIR}/pico-examples/build/blink/blink.uf2 || fail
+    test -f "${TARGET_DIR}/pico-examples/build/blink/blink.uf2" || fail
 
     # test that hello_serial is built
-    test -f ${TARGET_DIR}/pico-examples/build/hello_world/serial/hello_serial.uf2 || fail
+    test -f "${TARGET_DIR}/pico-examples/build/hello_world/serial/hello_serial.uf2" || fail
 
     # test that hello_usb is built
-    test -f ${TARGET_DIR}/pico-examples/build/hello_world/usb/hello_usb.uf2 || fail
+    test -f "${TARGET_DIR}/pico-examples/build/hello_world/usb/hello_usb.uf2" || fail
 }
 
 validate_pico_playground() {
@@ -397,7 +397,7 @@ validate_picotool() {
     validate_git_repo picotool
 
     # test that the binary is built
-    test -x ${TARGET_DIR}/picotool/build/picotool || fail
+    test -x "${TARGET_DIR}"/picotool/build/picotool || fail
 
     # test that picotool is installed in the expected location
     test -x /usr/local/bin/picotool || fail
@@ -428,7 +428,7 @@ validate_openocd() {
     validate_git_repo openocd
 
     # test that the binary is built
-    test -x ${TARGET_DIR}/openocd/src/openocd || fail
+    test -x "${TARGET_DIR}"/openocd/src/openocd || fail
 }
 
 setup_openocd() {
@@ -458,7 +458,7 @@ validate_picoprobe() {
     validate_git_repo picoprobe || fail
 
     # test that the binary is built
-    test -f ${TARGET_DIR}/picoprobe/build/picoprobe.uf2 || fail
+    test -f "${TARGET_DIR}"/picoprobe/build/picoprobe.uf2 || fail
 }
 
 setup_picoprobe() {
