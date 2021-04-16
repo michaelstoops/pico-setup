@@ -139,7 +139,7 @@ fail() {
 
     R="${?}"
     echo "Validation failed! :'-("
-    if [ ${*} ]; then
+    if [[ ${#} -ne 1 ]]; then
         echo "${*}"
     fi
     exit ${R}
@@ -215,7 +215,7 @@ clone_raspberrypi_repo() {
     else
         echo "Cloning ${REPO_URL}"
         if [ ${#} -gt 0 ]; then
-            git -C "${TARGET_DIR}" clone -b "${BRANCH}" "${REPO_URL}" ${*}
+            git -C "${TARGET_DIR}" clone -b "${BRANCH}" "${REPO_URL}" "${@}"
         else
             git -C "${TARGET_DIR}" clone -b "${BRANCH}" "${REPO_URL}"
         fi
